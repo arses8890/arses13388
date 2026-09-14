@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  spider-panel:
+    build: .
+    container_name: spider-panel
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - SECRET_KEY=${SECRET_KEY:-spider-panel-secret-key-v2}
+      - RAILWAY_PUBLIC_DOMAIN=${RAILWAY_PUBLIC_DOMAIN}
+      - DATA_DIR=/data
+
+      - SECRET_KEY=${SECRET_KEY:-spider-panel-secret-key-v2}
+    volumes:
+      - spider_data:/data
+    networks:
+      - spider-network
+    restart: unless-stopped
+networks:
+  spider-network:
+    driver: bridge
+
+volumes:
+  spider_data:
+    driver: local
